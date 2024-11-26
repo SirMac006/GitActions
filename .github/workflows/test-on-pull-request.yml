@@ -1,0 +1,32 @@
+name: Run Cypress Tests on Pull Request
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  cypress-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install Dependencies
+      run: |
+        cd client
+        npm install
+        npm install cypress --save-dev
+
+    - name: Run Cypress Component Tests
+      run: |
+        cd client
+        npx cypress run --component
+      env:
+        CYPRESS_baseUrl: http://localhost:3000
